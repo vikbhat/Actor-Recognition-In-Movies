@@ -10,7 +10,6 @@ import constants
 import multiprocessing as mp
 import functools
 
-
 def encode_faces(imagePath,detection_method):
     knownEncodings = []
     knownNames = []
@@ -29,6 +28,10 @@ def encode_faces(imagePath,detection_method):
     
         # compute the facial embedding for the face
         encodings = face_recognition.face_encodings(rgb, boxes)
+
+        # ignore images with multiple faces which causes misclassification for imdb
+        if len(encodings) > 1 : 
+            return([],[])
     
         # loop over the encodings
         for encoding in encodings:
